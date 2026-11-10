@@ -2,6 +2,8 @@
   "root": true,
   "extends": "retn0",
   "ignorePatterns": [
+    "dist-monitor/**/*",
+    "artifacts/**/*",
     "dist/**/*",
     "public/**/*"
   ],

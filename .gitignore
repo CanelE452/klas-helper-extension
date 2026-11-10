@@ -83,6 +83,10 @@ typings/
 # Nuxt.js build / generate output
 .nuxt
 dist
+dist-monitor/
+artifacts/
+*.snapshot.json
+*.snapshot.*.json
 
 # Gatsby files
 .cache/

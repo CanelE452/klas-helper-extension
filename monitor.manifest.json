@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "KLAS Read-only Lecture Monitor",
+  "version": "0.1.0",
+  "minimum_chrome_version": "111",
+  "description": "기존 KLAS 로그인으로 미수강 강의를 읽기 전용 조회하고 로컬 스냅샷을 저장합니다.",
+  "homepage_url": "https://github.com/CanelE452/klas-helper-extension",
+  "content_scripts": [{
+    "matches": ["https://klas.kw.ac.kr/std/cmn/frame/Frame.do*"],
+    "js": ["monitor.js"],
+    "run_at": "document_idle",
+    "world": "MAIN"
+  }]
+}

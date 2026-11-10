@@ -1,3 +1,12 @@
+# 미수강 강의 읽기 전용 모니터 포크
+
+**이번 포크의 설치·사용 안내: [README-MONITOR.md](README-MONITOR.md).**
+`npm run build:monitor`로 만든 `dist-monitor`를 사용하세요.
+마감 지난 미수강·진도·마감·조회시각을 조회하고 로컬 JSON으로 Codex/dot에 전달합니다.
+실계정 연결은 확장 설치 승인과 사용자 직접 로그인 후 확인해야 합니다.
+
+아래는 원본 KLAS Helper 안내입니다.
+
 # 🎠 KLAS Helper Extension
 
 ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/jicidjkhiefbhbgbfbemakjndloecjlf?style=flat-square)

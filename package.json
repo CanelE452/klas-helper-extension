@@ -5,6 +5,10 @@
     "packages/**/*"
   ],
   "scripts": {
+    "test": "node --test tests/*.test.cjs",
+    "lint:monitor": "eslint src/monitor scripts/build-monitor.cjs scripts/read-monitor.cjs tests --ext .js,.cjs",
+    "build:monitor": "node scripts/build-monitor.cjs",
+    "monitor:read": "node scripts/read-monitor.cjs",
     "build": "cross-env NODE_ENV=production webpack --progress",
     "dev": "cross-env NODE_ENV=development webpack --progress --watch",
     "lint": "eslint .",

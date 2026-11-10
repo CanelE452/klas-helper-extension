@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<title>KLAS Monitor · synthetic browser test</title>
+<style>body{max-width:1200px;margin:30px auto;background:#edf1f6}button,select{font:inherit;padding:7px}h1,p{font-family:sans-serif}</style>
+<h1>가상 데이터 브라우저 검증</h1>
+<p>실제 KLAS 계정이나 네트워크를 사용하지 않습니다.</p>
+<label>테스트 상황 <select id="scenario"><option value="complete">정상</option><option value="auth">로그인 만료</option><option value="offline">오프라인</option><option value="partial">부분 실패</option></select></label>
+<button id="semester">학기 변경</button>
+<div class="subjectbox"></div>
+<script>
+const watchers = [];
+var appModule = {
+  atnlcSbjectList: [
+    {subj:'DEMO101',subjNm:'가상 과목 A',yearhakgi:'2026,2'},
+    {subj:'DEMO102',subjNm:'가상 과목 B',yearhakgi:'2026,2'}
+  ],
+  $watch: (key, callback) => watchers.push(callback)
+};
+document.querySelector('#semester').addEventListener('click', () => {
+  appModule.atnlcSbjectList = appModule.atnlcSbjectList.map(course => ({...course,yearhakgi:'2027,1'}));
+  watchers.forEach(callback => callback());
+});
+window.fetch = async (url, options) => {
+  if (url !== '/std/lis/evltn/SelectOnlineCntntsStdList.do') throw Error('Unexpected synthetic endpoint');
+  const scenario = document.querySelector('#scenario').value;
+  if (scenario === 'offline') throw new TypeError('Synthetic offline');
+  const isSecond = JSON.parse(options.body).selectSubj === 'DEMO102';
+  if (scenario === 'auth' || scenario === 'partial' && isSecond) return new Response('<html>Login</html>', {status:401,headers:{'Content-Type':'text/html'}});
+  const later = new Date(Date.now()+3600000).toISOString();
+  const earlier = new Date(Date.now()-3600000).toISOString();
+  const rows = isSecond ? [] : [
+    {evltnSe:'lesson',isonoff:'ON',sbjt:'가상 강의 · 마감 전',prog:'25',endDate:later},
+    {evltnSe:'lesson',isonoff:'ON',sbjt:'가상 강의 · 마감 지남',prog:0,endDate:earlier},
+    {evltnSe:'lesson',isonoff:'ON',sbjt:'<img src=x onerror="document.title=\'UNSAFE\'">',prog:40,endDate:later},
+    {evltnSe:'lesson',isonoff:'ON',sbjt:'가상 완료 강의',prog:'100',endDate:earlier},
+    {evltnSe:'lesson',isonoff:'OFF',sbjt:'가상 비공개 강의',prog:0,endDate:later}
+  ];
+  return new Response(JSON.stringify(rows),{headers:{'Content-Type':'application/json'}});
+};
+</script>
+<script src="/monitor.js"></script>
+</html>
